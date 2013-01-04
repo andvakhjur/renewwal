@@ -1,0 +1,41 @@
+<?php
+if ($this->pageCount > 1) {
+    // you need to add each of the request parameters to url
+    $params = Zend_Controller_Front::getInstance()->getRequest()->getParams();
+    // remove the system parameters
+    unset($params['module']);
+    unset($params['controller']);
+    unset($params['action']);
+//    Zend_Debug::dump($this->url(array_merge($params, array('page' => 5))));
+    
+    
+//	$params = array();
+    ?>
+    <div class="paginationControl" style="width:auto; overflow: auto;">
+        <div style="width: auto;">
+        <?php $liWidth = 35;?>
+        <ul class="pages" style="width:<?php echo $this->pageCount*($liWidth+4) + 10;?>px; height:20px;">
+            <?php foreach ($this->pagesInRange as $page) { ?>
+                <?php if (0 == $page%2) { ?>
+                    <?php $bcolor = '#EBEBEB';?>
+                <?php } else { ?>
+                    <?php $bcolor = '#FCFCFC';?>
+                <?php } ?>
+                <?php if ($page != $this->current) { ?>
+                    <li style="width:<?php echo $liWidth;?>px; margin: 0px 2px; padding: 0px; background-color:<?php echo $bcolor;?>; text-align: center;">
+                        <a href="<?php echo $this->url(array_merge($params, array('page' => $page))); ?>">
+                           <?php echo $page; ?>
+                        </a>
+                    </li>
+                <?php } else { ?>
+                    <li style="width:<?php echo $liWidth;?>px; margin: 0px 2px; padding: 0px; background-color:#003C68; text-align: center; border-radius: 5px;">
+                        <a href="javascript: void(0);" style="color: #FFFFFF;">
+                            <?php echo $page; ?>
+                        </a>
+                    </li>
+                <?php } ?>
+            <?php } ?>
+        </ul>
+        </div>
+    </div>
+<?php } ?>

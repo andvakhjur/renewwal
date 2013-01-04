@@ -1,0 +1,29 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        showHideFormElements($('#type').val());
+        $('#type').change(function() {
+            showHideFormElements($('#type').val());
+        });
+    });
+    
+    function showHideFormElements(type)
+    {
+        if('menu' == type) {
+            return true;
+        }
+        
+        if('resource' == type) {
+            return true;
+        }
+    }
+</script>
+
+<div class="costfilterbox">
+	<div class="costform">
+		<?php echo $this->filterForm;?>
+	</div>
+</div>
+
+<?php echo $this->adminFormErrors($this->form); ?>
+
+<?php echo $this->form;?>

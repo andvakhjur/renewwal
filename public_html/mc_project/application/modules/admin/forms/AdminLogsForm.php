@@ -1,0 +1,157 @@
+<?php
+
+class Admin_Form_AdminLogsForm extends Mc_Form
+{
+
+    public $groups = array();
+
+    public function init()
+    {
+        parent::init();
+
+        $this->setMethod('post');
+        $helperUrl = new Zend_View_Helper_Url();
+        $this->setAction($helperUrl->url(array('module' => Zend_Registry::get('view')->moduleName, 'controller' => Zend_Registry::get('view')->controllerName, 'action' => Zend_Registry::get('view')->actionName), 'default', true));
+
+        $groupNumb = 0;
+        $elementNumb = 0;
+        
+        
+        //####################################################################//
+        // Next group
+        $groupName = 'group_' . $groupNumb++;
+        //--------------------------------------------------------------------//
+        $elementName = 'datetime';
+        $this->groups[$groupName][$elementName] = new Mc_Form_Element_Datetime($elementName);
+        $this->groups[$groupName][$elementName]->setRequired(false);
+        $this->groups[$groupName][$elementName]->addValidator(new Zend_Validate_Date(array('dd.MM.YYYY HH:mm:ss')), true);
+        $this->groups[$groupName][$elementName]->addFilter(new Zend_Filter_StringTrim());
+        $this->groups[$groupName][$elementName]->addDecorator('DateTimepicker');
+        $this->groups[$groupName][$elementName]->setLabel('Дата и время: ');
+        //--------------------------------------------------------------------//
+        $elementName = 'user_id';
+        $this->groups[$groupName][$elementName] = new Zend_Form_Element_Select($elementName);
+        $this->groups[$groupName][$elementName]->setLabel('Сотрудник: ');
+        //$this->groups[$groupName][$elementName]->setRequired (true);
+        $options = array();
+        $opt = new Admin_Model_AdminUsersModel();
+        $opt = $opt->getArticles();
+        if (count($opt) > 0) {
+            foreach ($opt as $opt_key => $opt_item) {
+                $options[$opt_item['id']] = $opt_item['fio'];
+            }
+        }
+        $this->groups[$groupName][$elementName]->addMultiOptions(
+            $options
+        );
+        //--------------------------------------------------------------------//
+        $elementName = 'remote_addr';
+        $this->groups[$groupName][$elementName] = new Zend_Form_Element_Text($elementName);
+        $this->groups[$groupName][$elementName]->setLabel('IP: ');
+        //$this->groups[$groupName][$elementName]->setRequired(true);
+        $this->groups[$groupName][$elementName]->setAttrib('size', 100);
+        //--------------------------------------------------------------------//
+        $elementName = 'type';
+        $this->groups[$groupName][$elementName] = new Zend_Form_Element_Select($elementName);
+        $this->groups[$groupName][$elementName]->setLabel('Действие: ');
+        //$this->groups[$groupName][$elementName]->setRequired(true);
+        //$this->groups[$groupName][$elementName]->setAttrib('size', 40);
+        $this->groups[$groupName][$elementName]->addMultiOptions(array(
+            'edit' => 'Редактирование',
+            'add' => 'Добавление',
+            'delete' => 'Удаление',
+        ));
+        //--------------------------------------------------------------------//
+        $elementName = 'module_name';
+        $this->groups[$groupName][$elementName] = new Zend_Form_Element_Text($elementName);
+        $this->groups[$groupName][$elementName]->setLabel('module: ');
+        //$this->groups[$groupName][$elementName]->setRequired(true);
+        $this->groups[$groupName][$elementName]->setAttrib('size', 100);
+        //--------------------------------------------------------------------//
+        $elementName = 'controller_name';
+        $this->groups[$groupName][$elementName] = new Zend_Form_Element_Text($elementName);
+        $this->groups[$groupName][$elementName]->setLabel('controller: ');
+        //$this->groups[$groupName][$elementName]->setRequired(true);
+        $this->groups[$groupName][$elementName]->setAttrib('size', 100);
+        //--------------------------------------------------------------------//
+        $elementName = 'action_name';
+        $this->groups[$groupName][$elementName] = new Zend_Form_Element_Text($elementName);
+        $this->groups[$groupName][$elementName]->setLabel('action: ');
+        //$this->groups[$groupName][$elementName]->setRequired(true);
+        $this->groups[$groupName][$elementName]->setAttrib('size', 100);
+        //--------------------------------------------------------------------//
+        $elementName = 'txt';
+        $this->groups[$groupName][$elementName] = new Zend_Form_Element_Text($elementName);
+        $this->groups[$groupName][$elementName]->setLabel('Описание: ');
+        //$this->groups[$groupName][$elementName]->setRequired(true);
+        $this->groups[$groupName][$elementName]->setAttrib('size', 100);
+        //####################################################################//
+        
+        
+        //####################################################################//
+        // Buttons
+        $groupName = 'buttons';
+        //--------------------------------------------------------------------//
+        $elementName = 'id';
+        $this->groups[$groupName][$elementName] = new Zend_Form_Element_Hidden($elementName);
+        $this->groups[$groupName][$elementName]->removeDecorator('label');
+        $this->groups[$groupName][$elementName]->removeDecorator('HtmlTag');
+        //--------------------------------------------------------------------//
+        $elementName = 'submit';
+        $this->groups[$groupName][$elementName] = new Zend_Form_Element_Submit($elementName, array(
+                'label' => 'Сохранить',
+                'class' => 'save_but'
+            ));
+        $this->groups[$groupName][$elementName]->clearDecorators();
+        $this->groups[$groupName][$elementName]->addDecorator('ViewHelper');
+        //--------------------------------------------------------------------//
+        $elementName = 'cancel';
+        $this->groups[$groupName][$elementName] = new Zend_Form_Element_Submit($elementName, array(
+                'label' => 'Отменить',
+                'class' => 'cancel_but'
+            ));
+        $this->groups[$groupName][$elementName]->clearDecorators();
+        $this->groups[$groupName][$elementName]->addDecorator('ViewHelper');
+        //####################################################################//
+        
+        
+        //####################################################################//
+        // Добавляем группы к форме
+        //####################################################################//
+
+        if (count($this->groups) > 0) {
+            foreach ($this->groups as $key => $item) {
+                switch ($key) {
+                    case 'buttons':
+                        $this->addDisplayGroup($item, $key, array('class' => 'form_group_buttons'));
+                        break;
+                    default:
+                        $this->addDisplayGroup($item, $key, array('class' => 'form_group'));
+                        break;
+                }
+            }
+        }
+    }
+
+    /**
+     * преобразует POST в нужный для сохранения формат
+     */
+    public function mapForm()
+    {
+        // маппим элементы в зависимости от их типа
+        $return = parent::mapForm();
+
+
+        // маппим конкретные элементы
+        //$values = $this->getValues();
+        //$datetime = new Zend_Date($values['datetime']);
+        //$return['datetime'] = $datetime->toString('yyyy-MM-dd HH:mm:ss');
+
+        unset($return['title_label']);
+
+        unset($return['submit']);
+        unset($return['cancel']);
+
+        return $return;
+    }
+}

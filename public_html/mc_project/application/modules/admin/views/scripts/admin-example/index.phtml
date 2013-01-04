@@ -1,0 +1,140 @@
+<div class="costfilterbox">
+    <div class="costform">
+        <?php echo $this->filterForm ?>
+    </div>
+</div>
+<p>
+    <a href="<?php echo $this->url(array('module' => Zend_Registry::get('view')->moduleName, 'controller' => Zend_Registry::get('view')->controllerName, 'action' => 'add'), 'default', true); ?>" class="addbut">
+        Добавить
+    </a>
+</p>
+<?php if (count($this->paginator) > 0) {?>
+    <?php $this->headScript()->captureStart(); ?>
+
+    function del_fields(){
+    if(confirm('"Вы действительно хотите удалить эти поля?"')){
+    document.fields.submit();
+    }
+    }
+
+    $(document).ready(function(){
+    $('#markAllRows').click(function () {
+    if(document.getElementById('markAllRows').checked){
+    $('.checkedrow').attr('checked', true);
+    }else{
+    $('.checkedrow').attr('checked', false);
+    }
+    });
+    });
+
+    <?php $this->headScript()->captureEnd(); ?>
+    <div class="usertable">
+        <form name="fields" method="POST" action="<?php echo $this->url(array('module' => Zend_Registry::get('view')->moduleName, 'controller' => Zend_Registry::get('view')->controllerName, 'action' => 'delfields'), 'default', true); ?>">
+            <table width="100%" border="1">
+                <tr>
+                    <th scope="col" style="width:40px;">&nbsp;</th>
+                    <th scope="col" style="width:40px;">&nbsp;</th>
+                    
+                    <th scope="col">
+                        <?php
+                            $options = array(
+                                "colName" => "sect_id",
+                                "actionName" => "order-by-sect-id",
+                                "title" => "Раздел",
+                            );
+                            $this->assign(array("orderOptions" => $options));
+                            echo $this->render('ordered-title.phtml', array());
+                        ?>
+                    </th>
+                    <th scope="col">
+                        <?php
+                            $options = array(
+                                "colName" => "cat_id",
+                                "actionName" => "order-by-cat-id",
+                                "title" => "Категория",
+                            );
+                            $this->assign(array("orderOptions" => $options));
+                            echo $this->render('ordered-title.phtml', array());
+                        ?>
+                    </th>
+                    <th scope="col">
+                        <?php
+                            $options = array(
+                                "colName" => "datetime",
+                                "actionName" => "order-by-datetime",
+                                "title" => "Время публикации",
+                            );
+                            $this->assign(array("orderOptions" => $options));
+                            echo $this->render('ordered-title.phtml', array());
+                        ?>
+                    </th>
+                    <th scope="col">
+                        <?php
+                            $options = array(
+                                "colName" => "title",
+                                "actionName" => "order-by-title",
+                                "title" => "Название",
+                            );
+                            $this->assign(array("orderOptions" => $options));
+                            echo $this->render('ordered-title.phtml', array());
+                        ?>
+                    </th>
+                    <th scope="col"><span>Краткий текст</span></th>
+                    <th scope="col" style="width:60px;"><span>Картинка</span></th>
+                    <th scope="col">
+                        <?php
+                            $options = array(
+                                "colName" => "show",
+                                "actionName" => "order-by-show",
+                                "title" => "Показывать",
+                            );
+                            $this->assign(array("orderOptions" => $options));
+                            echo $this->render('ordered-title.phtml', array());
+                        ?>
+                    </th>
+                    <th scope="col">
+                        <?php
+                            $options = array(
+                                "colName" => "order",
+                                "actionName" => "order-by-order",
+                                "title" => "Порядок",
+                            );
+                            $this->assign(array("orderOptions" => $options));
+                            echo $this->render('ordered-title.phtml', array());
+                        ?>
+                    </th>
+                    <th scope="col"><span>Категории</span></th>
+                    <th scope="col"><span>Товары</span></th>
+                    
+                    <th scope="col" style="width:40px;">&nbsp;</th>
+                </tr>
+                <?php echo $this->partialLoop(Zend_Registry::get('view')->controllerName . '/index-row.phtml', $this->paginator); ?>
+                <tr bgcolor="#EBEBEB">
+                    <td align="center"><input type="checkbox" title="Отметить все" id="markAllRows"/></td>
+                    <td></td>
+                    
+                    <td><div style="position:relative;"><span>С отмеченными</span> <a style="position:absolute; left:100px;" title="Удалить" href="javascript:del_fields()"><img width="18" height="18" alt="" src="<?php echo Zend_Registry::get('config')->url->admin_content ?>/images/delbut.png"></a></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    
+                    <td></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <?php echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-control.phtml'); ?>
+<?php } else { ?>
+    <p>Записей еще нет</p>
+<?php } ?>
+<p>
+    <a href="<?php echo $this->url(array('module' => Zend_Registry::get('view')->moduleName, 'controller' => Zend_Registry::get('view')->controllerName, 'action' => 'add'), 'default', true); ?>" class="addbut">
+        Добавить
+    </a>
+</p>

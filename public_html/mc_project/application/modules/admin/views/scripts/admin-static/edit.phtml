@@ -1,0 +1,13 @@
+<?php if (true == $this->itsAdmin) { ?>
+    <div class="costfilterbox">
+        <div class="costform">
+            <?php echo $this->filterForm?>
+        </div>
+    </div>
+<?php } ?>
+
+<?php echo $this->adminFormErrors($this->form); ?>
+
+<?php
+echo $this->form;
+?>

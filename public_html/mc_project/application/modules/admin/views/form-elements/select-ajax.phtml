@@ -1,0 +1,21 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#<?php echo $this->options['firstSelectId']; ?>').change(function(){
+            $('#<?php echo $this->options['secondSelectId']; ?>').css('opacity', '0.5');
+            $('#<?php echo $this->options['secondSelectId']; ?>').attr('disabled', true);
+            $.getJSON("<?php echo Zend_Registry::get('config')->url->root;?>/admin/admin-ajax/selectajax/format/json", {
+                "firstSelectVal": $(this).val(),
+                "secondSelectModelName": '<?php echo $this->options['secondSelectModelName']; ?>',
+                "secondSelectColNamePar": '<?php echo $this->options['secondSelectColNamePar']; ?>',
+                "secondSelectColNameId": '<?php echo $this->options['secondSelectColNameId']; ?>',
+                "secondSelectColNameTitle": '<?php echo $this->options['secondSelectColNameTitle']; ?>'
+            },
+            function(response){
+                $('#<?php echo $this->options['secondSelectId']; ?>').html(response['html']);
+                $('#<?php echo $this->options['secondSelectId']; ?>').css('opacity', '1');
+                $('#<?php echo $this->options['secondSelectId']; ?>').attr('disabled', false);
+                $('#<?php echo $this->options['secondSelectId']; ?>').change();// делаем change, чтобы по цепочке сработал следующий селект
+            });
+        });
+    });
+</script>

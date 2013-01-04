@@ -1,0 +1,20 @@
+<script type="text/javascript">
+    //<![CDATA[
+    $(document).ready(function(){
+        $(".commentbox").click(function(){
+            $(".commentbox").remove();
+        });
+        $(this).oneTime(3000, function() {
+            $(".commentbox").fadeTo("slow", 0.33);
+        });
+    });
+    //]]>
+</script>
+<div style="background-color:#72ba6b" class="commentbox" id="commentbox">
+    <?php
+//#ed6060 - красный
+    foreach ($this->flashMessages as $message) {
+        echo '<p>', $message, '</p>';
+    }
+    ?>
+</div>

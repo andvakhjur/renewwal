@@ -1,0 +1,75 @@
+<script type="text/javascript">
+    function seoToggle()
+    {
+        $(".seo").toggle();
+    }
+</script>
+
+<div class="costfilterbox">
+    <div class="costform">
+        <?php echo $this->filterForm ?>
+    </div>
+</div>
+<p>
+    <a href="<?php echo $this->url(array('module' => Zend_Registry::get('view')->moduleName, 'controller' => Zend_Registry::get('view')->controllerName, 'action' => 'add'), 'default', true); ?>" class="addbut">
+        Добавить
+    </a>
+</p>
+<?php if ($this->paginator->count() > 0) {?>
+    <?php $this->headScript()->captureStart(); ?>
+
+    function del_fields(){
+    if(confirm('"Вы действительно хотите удалить эти поля?"')){
+    document.fields.submit();
+    }
+    }
+
+    $(document).ready(function(){
+    $('#markAllRows').click(function () {
+    if(document.getElementById('markAllRows').checked){
+    $('.checkedrow').attr('checked', true);
+    }else{
+    $('.checkedrow').attr('checked', false);
+    }
+    });
+    });
+
+    <?php $this->headScript()->captureEnd(); ?>
+    <div class="usertable">
+        <form name="fields" method="POST" action="<?php echo $this->url(array('module' => Zend_Registry::get('view')->moduleName, 'controller' => Zend_Registry::get('view')->controllerName, 'action' => 'delfields'), 'default', true); ?>">
+            <table width="100%" border="1">
+                <tr>
+                    <th scope="col" style="width:40px;">&nbsp;</th>
+                    <th scope="col" style="width:40px;">&nbsp;</th>
+                    
+                    <th scope="col"><span>Нижняя сумма</span></th>
+                    <th scope="col"><span>Верхняя сумма</span></th>
+                    <th scope="col"><span>Скидка (%)</span></th>
+                    <th scope="col"><span>Использовать</span></th>
+                    
+                    <th scope="col" style="width:40px;"></th>
+                </tr>
+                <?php echo $this->partialLoop(Zend_Registry::get('view')->controllerName . '/index-row.phtml', $this->paginator); ?>
+                <tr bgcolor="#EBEBEB">
+                    <td align="center"><input type="checkbox" title="Отметить все" id="markAllRows"/></td>
+                    <td></td>
+                    
+                    <td><div style="position:relative;"><span>С отмеченными</span> <a style="position:absolute; left:100px;" title="Удалить" href="javascript:del_fields()"><img width="18" height="18" alt="" src="<?php echo Zend_Registry::get('config')->url->admin_content ?>/images/delbut.png"></a></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    
+                    <td></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <?php echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-control.phtml'); ?>
+<?php } else { ?>
+    <p>Записей еще нет</p>
+<?php } ?>
+<p>
+    <a href="<?php echo $this->url(array('module' => Zend_Registry::get('view')->moduleName, 'controller' => Zend_Registry::get('view')->controllerName, 'action' => 'add'), 'default', true); ?>" class="addbut">
+        Добавить
+    </a>
+</p>

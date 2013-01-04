@@ -1,0 +1,93 @@
+<tr>
+	<td align="center">
+        <div>
+            <input type="checkbox" class="checkedrow" name="field[<?php echo $this->id?>]" title="Отметить"/>
+        </div>
+    </td>
+	<td align="center">
+        <div>
+            <a title="Редактировать" href="<?php echo $this->url(array('module' => Zend_Registry::get('view')->moduleName, 'controller' => Zend_Registry::get('view')->controllerName, 'action' => 'edit', 'id' => $this->id), 'default', true);?>">
+                <img width="16" height="16" alt="" src="<?php echo Zend_Registry::get('config')->url->admin_content;?>/images/editimg.png" />
+            </a>
+        </div>
+    </td>
+    
+    
+    <td>
+        <div style="overflow:hidden; margin-left:10px; text-align:left; min-width:120px;">
+            <?php echo $this->datetime ?>
+        </div>
+    </td>
+    <td>
+        <div style="overflow:hidden; margin-left:10px; text-align:left; min-width:120px;">
+            <?php $opt = new Admin_Model_AdminUsersModel();?>
+            <?php if (!empty($this->user_id)) { ?>
+                <?php $opt = $opt->getArticle($this->user_id);?>
+            <?php } ?>
+            <?php if (!empty($this->user_id) && !empty($opt)) { ?>
+                <span><?php echo $opt['fio']; ?></span>
+            <?php } else { ?>
+                <span style="color:#FF9999">Не выбрано</span>
+            <?php } ?>
+        </div>
+    </td>
+    <td style="padding:5px 0px 0px 0px">
+        <div style="overflow:hidden; text-align:left; width:100px;">
+            <?php $opt = new Admin_Model_AdminUsersModel();?>
+            <?php $opt = $opt->getArticle($this->user_id);?>
+            
+            <?php if (!empty($opt['id'])) { ?>
+                <?php if (is_file(Zend_Registry::get('config')->path->upload . '/admin_users/images/adm_'.$opt['avatar'])) { ?>
+                    <a class="highslide" onclick="return hs.expand(this)" href="<?php echo Zend_Registry::get('config')->url->upload . '/admin_users/images/s_' . $opt['avatar']; ?>">
+                        <img style="width:50px; margin: 0px 0px 0px 5px" src="<?php echo Zend_Registry::get('config')->url->upload . '/admin_users/images/adm_'.$opt['avatar']; ?>" />
+                    </a>
+                <?php } else { ?>
+                    <a class="highslide" onclick="return hs.expand(this)" href="<?php echo Zend_Registry::get('config')->url->upload . '/default_photo_250x250.jpg';?>">
+                        <img style="width:50px; margin: 0px 0px 0px 5px" src="<?php echo Zend_Registry::get('config')->url->upload . '/default_photo_100x100.jpg';?>" />
+                    </a>
+                <?php } ?>
+            <?php } else { ?>
+                <span style="color:#FF9999">Не выбрано</span>
+            <?php } ?>
+            
+            
+        </div>
+    </td>
+    <td>
+        <div style="overflow:hidden; margin-left:10px; text-align:left; min-width:120px;">
+            <?php echo $this->remote_addr ?>
+        </div>
+    </td>
+    <td>
+        <div style="overflow:hidden; margin-left:10px; text-align:left; min-width:80px; max-width:400px">
+            <?php if ('edit' == $this->type) { ?>
+                <span style="color:#333399">Редактирование</span>
+            <?php } elseif ('add' == $this->type) { ?>
+                <span style="color:#339933">Добавление</span>
+            <?php } elseif ('delete' == $this->type) { ?>
+                <span style="color:#FF3333">Удаление</span>
+            <?php } else { ?>
+                <span style="color:gray">Не указано</span>
+            <?php } ?>
+        </div>
+    </td>
+    <td>
+        <div style="overflow:hidden; margin-left:10px; text-align:left; min-width:120px;">
+            <?php echo $this->controller_name ?>
+        </div>
+    </td>
+    <td>
+        <div style="overflow:hidden; margin-left:10px; text-align:left; min-width:120px;">
+            <?php echo $this->txt ?>
+        </div>
+    </td>
+    
+    
+	<td align="center">
+        <div>
+            <a title="Удалить" href="<?php echo $this->url(array('module' => Zend_Registry::get('view')->moduleName, 'controller' => Zend_Registry::get('view')->controllerName, 'action' => 'delete', 'id' => $this->id), 'default', true);?>" onclick="return confirm('Вы действительно хотите удалить эту запись?')">
+                <img width="18" height="18" alt="" src="<?php echo Zend_Registry::get('config')->url->admin_content;?>/images/delbut.png" />
+            </a>
+        </div>
+    </td>
+</tr>

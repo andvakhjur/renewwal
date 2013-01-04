@@ -1,0 +1,22 @@
+<ul>
+<?php
+	$separator = $this->navigation()->breadcrumbs()->getSeparator();
+
+	$i = 0;
+	$pagesCount = count($this->container);
+	foreach($this->container as $page) {
+		$i++;
+		$uri = $page->getUri();
+?>
+	<?php if(!empty($uri)) { ?>
+		<li><a href="<?php echo $uri;?>"><?php echo $page->getLabel();?></a></li>
+	<?php	} else { ?>
+		<li><?php echo $page->getLabel();?></li>
+	<?php	} ?>
+	<?php if($i < $pagesCount) { ?>
+		<?php echo $separator;?>
+	<?php } ?>
+<?php	
+	}
+?>
+</ul>

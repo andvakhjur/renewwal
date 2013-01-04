@@ -1,0 +1,33 @@
+<?php
+$colName = $this->orderOptions["colName"];
+$actionName = $this->orderOptions["actionName"];
+$title = $this->orderOptions["title"];
+?>
+
+<div class="order_div">
+    <span class="order_title">
+        <a href="<?php echo $this->url(array("controller" => $this->controllerName, "action" => $actionName, "direction" => "toggle"), $this->routeName); ?>">
+            <?php echo $title; ?>
+        </a>
+    </span>
+    <?php
+    if(!empty($this->orderValues->$colName->direction)) {
+        $orderDirection = $this->orderValues->$colName->direction;
+    } else {
+        $orderDirection = "none";
+    }
+    ?>
+    <span class="order_<?php echo $orderDirection;?>" onmouseover="javascript:$(this).children('.order_popup_<?php echo $colName;?>').show();">
+        <div class="order_popup order_popup_<?php echo $colName;?>" onmouseout="javascript:$(this).hide();">
+            <a class="order_popup_asc" href="<?php echo $this->url(array("controller" => $this->controllerName, "action" => $actionName, "direction" => "asc"), $this->routeName); ?>">
+                <img src="<?php echo Zend_Registry::get('config')->url->admin_content?>/images/order/order_asc.gif" />
+            </a>
+            <a class="order_popup_none" href="<?php echo $this->url(array("controller" => $this->controllerName, "action" => $actionName, "direction" => "none"), $this->routeName); ?>">
+                <img src="<?php echo Zend_Registry::get('config')->url->admin_content?>/images/order/order_none.gif" />
+            </a>
+            <a class="order_popup_desc" href="<?php echo $this->url(array("controller" => $this->controllerName, "action" => $actionName, "direction" => "desc"), $this->routeName); ?>">
+                <img src="<?php echo Zend_Registry::get('config')->url->admin_content?>/images/order/order_desc.gif" />
+            </a>
+        </div>
+    </span>
+</div>

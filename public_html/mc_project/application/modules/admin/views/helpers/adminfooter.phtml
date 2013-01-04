@@ -1,0 +1,14 @@
+<div id="footer">
+    <p>
+        Статус: <?php echo $this->current_user->status; ?> <span>|</span> <?php echo $this->current_user->fio; ?>
+        
+        <span id="very_secret_content">
+            <?php $acl = new Mc_Acl($this->userinfo());?>
+            <?php if ($acl->isAllowed('admin-admin-meta')) { ?>
+                <a style="float:right; padding-right:10px;color:#ffffff" href="<?php echo $this->url(array('module' => Zend_Registry::get('view')->moduleName, 'controller' => 'admin-meta', 'action' => 'index'), 'default', true);?>">
+                    Мета
+                </a>
+            <?php }?>
+        </span>
+    </p>
+</div><!-- #footer -->

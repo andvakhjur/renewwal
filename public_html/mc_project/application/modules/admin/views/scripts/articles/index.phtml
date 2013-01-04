@@ -1,0 +1,128 @@
+<script type="text/javascript">
+    function seoToggle()
+    {
+        $(".seo").toggle();
+    }
+</script>
+
+<div class="costfilterbox">
+    <div class="costform">
+        <?php echo $this->filterForm ?>
+    </div>
+</div>
+<p>
+    <a href="<?php echo $this->url(array('module' => Zend_Registry::get('view')->moduleName, 'controller' => Zend_Registry::get('view')->controllerName, 'action' => 'add'), 'default', true); ?>" class="addbut">
+        <?php echo $this->translate('Добавить'); ?>
+    </a>
+</p>
+<?php if (count($this->paginator) > 0) {?>
+    <?php $this->headScript()->captureStart(); ?>
+
+    function del_fields(){
+    if(confirm('"<?php echo $this->translate('Вы действительно хотите удалить эти поля?'); ?>"')){
+    document.fields.submit();
+    }
+    }
+
+    $(document).ready(function(){
+    $('#markAllRows').click(function () {
+    if(document.getElementById('markAllRows').checked){
+    $('.checkedrow').attr('checked', true);
+    }else{
+    $('.checkedrow').attr('checked', false);
+    }
+    });
+    });
+
+    <?php $this->headScript()->captureEnd(); ?>
+    <div class="usertable">
+        <form name="fields" method="POST" action="<?php echo $this->url(array('module' => Zend_Registry::get('view')->moduleName, 'controller' => Zend_Registry::get('view')->controllerName, 'action' => 'delfields'), 'default', true); ?>">
+            <table width="100%" border="1">
+                <tr>
+                    <th scope="col" style="width:40px;">&nbsp;</th>
+                    <th scope="col" style="width:40px;">&nbsp;</th>
+                    
+                    <th scope="col">
+                        <?php
+                            $options = array(
+                                "colName" => "datetime",
+                                "actionName" => "order-by-datetime",
+                                "title" => $this->translate('Время публикации'),
+                            );
+                            $this->assign(array("orderOptions" => $options));
+                            echo $this->render('ordered-title.phtml', array());
+                        ?>
+                    </th>
+                    <th scope="col">
+                        <?php
+                            $options = array(
+                                "colName" => "title",
+                                "actionName" => "order-by-title",
+                                "title" => $this->translate('Название'),
+                            );
+                            $this->assign(array("orderOptions" => $options));
+                            echo $this->render('ordered-title.phtml', array());
+                        ?>
+                    </th>
+                    <th scope="col"><span><?php echo $this->translate('Краткий текст'); ?></span></th>
+                    <th scope="col" style="width:60px;"><span><?php echo $this->translate('Картинка'); ?></span></th>
+                    <th scope="col">
+                        <?php
+                            $options = array(
+                                "colName" => "show",
+                                "actionName" => "order-by-show",
+                                "title" => $this->translate('Показывать'),
+                            );
+                            $this->assign(array("orderOptions" => $options));
+                            echo $this->render('ordered-title.phtml', array());
+                        ?>
+                    </th>
+                    <th class="seo" scope="col">
+                        <?php
+                            $options = array(
+                                "colName" => "url",
+                                "actionName" => "order-by-url",
+                                "title" => $this->translate('URL страницы'),
+                            );
+                            $this->assign(array("orderOptions" => $options));
+                            echo $this->render('ordered-title.phtml', array());
+                        ?>
+                    </th>
+                    <th class="seo" scope="col"><span>meta_title</span></th>
+                    <th class="seo" scope="col"><span>meta_description</span></th>
+                    <th class="seo" scope="col"><span>meta_keywords</span></th>
+                    
+                    
+                    <th class="seo_gear" scope="col" style="width:40px;">
+                        <img onClick="javascript: seoToggle();" src="<?php echo Zend_Registry::get('config')->url->admin_content; ?>/images/gear.png" />
+                    </th>
+                </tr>
+                <?php echo $this->partialLoop(Zend_Registry::get('view')->controllerName . '/index-row.phtml', $this->paginator); ?>
+                <tr bgcolor="#EBEBEB">
+                    <td align="center"><input type="checkbox" title="Отметить все" id="markAllRows"/></td>
+                    <td></td>
+                    
+                    <td><div style="position:relative;"><span><?php echo $this->translate('С отмеченными'); ?></span> <a style="position:absolute; left:100px;" title="<?php echo $this->translate('Удалить'); ?>" href="javascript:del_fields()"><img width="18" height="18" alt="" src="<?php echo Zend_Registry::get('config')->url->admin_content ?>/images/delbut.png"></a></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="seo"></td>
+                    <td class="seo"></td>
+                    <td class="seo"></td>
+                    <td class="seo"></td>
+                    
+                    <td></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <?php echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-control.phtml'); ?>
+<?php } else { ?>
+    <p><?php echo $this->translate('Записей еще нет'); ?></p>
+<?php } ?>
+<p>
+    <a href="<?php echo $this->url(array('module' => Zend_Registry::get('view')->moduleName, 'controller' => Zend_Registry::get('view')->controllerName, 'action' => 'add'), 'default', true); ?>" class="addbut">
+        <?php echo $this->translate('Добавить'); ?>
+    </a>
+</p>

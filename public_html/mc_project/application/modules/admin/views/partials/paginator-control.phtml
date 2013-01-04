@@ -1,0 +1,58 @@
+<?php
+if ($this->pageCount > 1) {
+    // you need to add each of the request parameters to url
+    $params = Zend_Controller_Front::getInstance()->getRequest()->getParams();
+    // remove the system parameters
+    unset($params['module']);
+    unset($params['controller']);
+    unset($params['action']);
+//    Zend_Debug::dump($this->url(array_merge($params, array('page' => 5))));
+    
+    
+//	$params = array();
+    ?>
+    <div class="paginationControl">
+        <ul class="pages">
+            <!-- Previous page link -->
+            <?php if (isset($this->previous)) { ?>
+                <li>
+                    <a href="<?php echo $this->url(array_merge(
+                $params, array('page' => $this->previous))); ?>">
+                        &lt;
+                    </a>
+                </li>
+            <?php } else { ?>
+                <li>
+                    <span class="disabled">&lt; </span>
+                </li>
+            <?php } ?>
+            <!-- Numbered page links -->
+            <?php foreach ($this->pagesInRange as $page) { ?>
+                <?php if ($page != $this->current) { ?>
+                    <li>
+                        <a href="<?php echo $this->url(array_merge($params, array('page' => $page))); ?>">
+                           <?php echo $page; ?>
+                        </a>
+                    </li>
+                <?php } else { ?>
+                    <li class="active">
+                        <?php echo $page; ?>
+                    </li>
+                <?php } ?>
+            <?php } ?>
+            <!-- Next page link -->
+            <?php if (isset($this->next)) { ?>
+                <li>
+                    <a href="<?php echo $this->url(
+                    array_merge($params, array('page' => $this->next))); ?>">
+                        &gt;
+                    </a>
+                </li>
+            <?php } else { ?>
+                <li>
+                    <span class="disabled"> &gt;</span>
+                </li>
+            <?php } ?>
+        </ul>
+    </div>
+<?php } ?>

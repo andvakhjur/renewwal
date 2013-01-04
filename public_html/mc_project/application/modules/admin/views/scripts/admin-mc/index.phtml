@@ -1,0 +1,34 @@
+<?php $acl = new Mc_Acl($this->userinfo());?>
+<h1>Супер Административная зона</h1>
+        
+<div class="mc_link">
+    <?php if ($acl->isAllowed('admin-admin-resources')) { ?>
+        <a href="<?php echo $this->url(array('module' => Zend_Registry::get('view')->moduleName, 'controller' => 'admin-resources', 'action' => 'filter-by-par-id', 'par_id' => ''), 'default', true);?>">
+            Ресурсы
+        </a>
+    <?php }?>
+</div>
+
+<div class="mc_link">
+    <?php if ($acl->isAllowed('admin-admin-static')) { ?>
+        <a href="<?php echo $this->url(array('module' => Zend_Registry::get('view')->moduleName, 'controller' => 'admin-static', 'action' => 'index'), 'default', true);?>">
+            Статика
+        </a>
+    <?php }?>
+</div>
+
+<div class="mc_link">
+    <?php if ($acl->isAllowed('admin-admin-meta')) { ?>
+        <a href="<?php echo $this->url(array('module' => Zend_Registry::get('view')->moduleName, 'controller' => 'admin-meta', 'action' => 'index'), 'default', true);?>">
+            Мета
+        </a>
+    <?php }?>
+</div>
+
+<div class="mc_link">
+    <?php if ($acl->isAllowed('admin-admin-logs')) { ?>
+        <a href="<?php echo $this->url(array('module' => Zend_Registry::get('view')->moduleName, 'controller' => 'admin-logs', 'action' => 'index'), 'default', true);?>">
+            Журнал
+        </a>
+    <?php }?>
+</div>

@@ -1,0 +1,53 @@
+<script type="text/javascript">
+    //<![CDATA[
+    $(document).ready(function(){
+        $(".menu").click(
+            function(){
+                var id = $(this).attr('id');
+                $("#submenu"+id).slideToggle("fast");
+                $("#"+id).parent().toggleClass("listactive");
+                return false;
+            }
+        );
+        $(".activemenu").slideToggle("fast");
+    });
+    //]]>
+</script>
+<div class="leftmenu">
+    <ul>
+        <?php if (count($this->menu) > 0) { ?>
+            <?php foreach ($this->menu as $key => $item) { ?>
+                <?php makeMenuItem($item, $this, 0)?>
+            <?php } ?>
+        <?php } ?>
+    </ul>
+</div><!--.leftmenu-->
+
+<?php
+function makeMenuItem($currentItem, $view, $nestingLevel = 0)
+{
+    ?>
+    <?php $marginLeft = $nestingLevel*10;?>
+    <?php if ('menu' == $currentItem['type']) {?>
+        <li class="withpodmenu <?php echo ($currentItem['active'])?'listactive':'';?>" style="margin-left:<?php echo $marginLeft;?>px;">
+            <a href="javascript:void(0);" class="menu" id="<?php echo $currentItem['id']?>">
+                <?php echo $currentItem['title']?>
+            </a>
+            <?php if (count($currentItem['childs']) > 0) { ?>
+                <ul class="podmenu <?php echo ($currentItem['active'])?'activemenu':'';?>" id="submenu<?php echo $currentItem['id']?>" style="display: none;">
+                    <?php foreach ($currentItem['childs'] as $key => $item) { ?>
+                        <?php echo makeMenuItem($item, $view, ($nestingLevel+1));?>
+                    <?php } ?>
+                </ul>
+            <?php } ?>
+        </li>
+    <?php } elseif ('resource' == $currentItem['type']) {?>
+        <li class="<?php echo ($currentItem['active'])?'activesubmenu':'';?>" style="margin-left:<?php echo $marginLeft;?>px;">
+            <a href="<?php echo Zend_Registry::get('config')->url->root . '/admin/' . preg_replace('/^admin-/', '', $currentItem['name'])?>" id="linemenu<?php echo $currentItem['id']?>">
+                <?php echo $currentItem['title']?>
+            </a>
+        </li>
+    <?php }?>
+    <?php
+}
+?>

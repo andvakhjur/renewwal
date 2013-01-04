@@ -1,0 +1,43 @@
+<?php echo $this->doctype() ?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>Административная зона управления сайтом</title>
+        <meta name="title" content="" />
+        <meta name="keywords" content="" />
+        <meta name="description" content="" />
+        <link rel="stylesheet" href="<?php echo Zend_Registry::get('config')->url->admin_content; ?>/style/style.css" type="text/css" media="screen, projection" />
+        <!--[if lte IE 6]><link rel="stylesheet" href="<?php echo Zend_Registry::get('config')->url->admin_content; ?>/style/style_ie.css" type="text/css" media="screen, projection" /><![endif]-->
+        
+        <?php
+        if ($this->jQuery()->isEnabled()) {
+            echo $this->jQuery();
+        } else {
+            $this->headScript()->prependFile(Zend_Registry::get('config')->url->admin_content . '/js/jquery.min.js');
+        }
+        
+        echo $this->headScript();
+        ?>
+        
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#login').focus();
+            });
+        </script>
+    </head>
+    <body>
+        <div style="min-width: 1000px; width: 100%;">
+
+            <div style="height:90px;">
+                <div style="background-color:#EAE9CE; height: 68px; width: 100%;">
+                    <div style="position: absolute; left: 50px;" class="costform">
+                        <?php echo $this->layout()->content; ?>
+                    </div>
+                </div><!--.headertop -->
+                <div style="background-color:#9CCB07; height:22px; width:100%;">
+                </div><!--.headerbottom -->
+            </div><!-- #header-->
+
+        </div><!-- #wrapper -->
+    </body>
+</html>

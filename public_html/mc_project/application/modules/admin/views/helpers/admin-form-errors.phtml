@@ -1,0 +1,13 @@
+<?php if (count($this->form->getMessages()) > 0) { ?>
+<div class="form_errors">
+    <ul class="errors">
+    <?php foreach ($this->form->getMessages() as $errors_key => $errors_item) { ?>
+        <?php if (count($errors_item) > 0) { ?>
+            <?php foreach ($errors_item as $errors_item_key => $errors_item_item) { ?>
+                <li><span class="error_label"><?php echo $this->form->getElement($errors_key)->getLabel();?></span> <span class="error_message"><?php echo $errors_item_item;?></span></li>
+            <?php } ?>
+        <?php } ?>
+    <?php } ?>
+    </ul>
+</div>
+<?php } ?>

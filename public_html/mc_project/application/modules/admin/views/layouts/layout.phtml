@@ -1,0 +1,160 @@
+<?php echo $this->doctype(Zend_View_Helper_Doctype::XHTML1_STRICT); ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+
+        <?php print $this->headMeta()->prependHttpEquiv('Content-Type', 'text/html; charset=UTF-8'); ?>
+
+        <title>Административная зона управления сайтом</title>
+        <meta name="title" content="" />
+        <meta name="keywords" content="" />
+        <meta name="description" content="" />
+        <link rel="stylesheet" href="<?php echo Zend_Registry::get('config')->url->admin_content; ?>/style/style.css" type="text/css" media="screen, projection" />
+        <link rel="stylesheet" href="<?php echo Zend_Registry::get('config')->url->admin_content; ?>/style/form.css" type="text/css" media="screen, projection" />
+        <link rel="stylesheet" href="<?php echo Zend_Registry::get('config')->url->admin_content; ?>/js/valums/fileuploader.css" type="text/css" media="screen, projection" />
+        <link rel="stylesheet" href="<?php echo Zend_Registry::get('config')->url->admin_content; ?>/js/jquery-ui/themes/smoothness/jquery-ui.custom.css" type="text/css" media="screen, projection" />
+        <link rel="stylesheet" href="<?php echo Zend_Registry::get('config')->url->admin_content; ?>/js/jquery-ui/timepicker/jquery-ui-timepicker-addon.css" type="text/css" media="screen, projection" />
+        <?php /*?><link rel="stylesheet" href="<?php echo Zend_Registry::get('config')->url->admin_content; ?>/js/elfinder/css/elfinder.css" /><?php */?>
+        <?php /*?><link rel="stylesheet" href="<?php echo Zend_Registry::get('config')->url->admin_content; ?>/js/elfinder/css/theme.css" /><?php */?>
+        <?php print $this->HeadLink(); ?>
+        <?php /* $this->headScript()->captureStart(); ?>
+          $(document).ready(function(){
+          $("#link8").click(function (){
+          $("#podmenu8").toggle();
+          });
+          });
+          <?php $this->headScript()->captureEnd(); */ ?>
+        <?php
+        $this->headScript()
+                ->prependFile(Zend_Registry::get('config')->url->admin_content . '/js/swfobject.js')
+                ->prependFile(Zend_Registry::get('config')->url->admin_content . '/js/jquery.timers.js')
+                ->prependFile(Zend_Registry::get('config')->url->admin_content . '/js/valums/fileuploader.js')
+//                ->prependFile(Zend_Registry::get('config')->url->admin_content . '/js/elfinder/js/i18n/elfinder.ru.js')
+//                ->prependFile(Zend_Registry::get('config')->url->admin_content . '/js/elfinder/js/elfinder.min.js')
+//                ->prependFile(Zend_Registry::get('config')->url->admin_content . '/js/tiny_mce/jquery.tinymce.js')
+                ->prependFile(Zend_Registry::get('config')->url->admin_content . '/js/jquery-ui/timepicker/jquery-ui-timepicker-addon.js')
+                ->prependFile(Zend_Registry::get('config')->url->admin_content . '/js/jquery-ui/i18n/jquery-ui-i18n.js')
+                ->prependFile(Zend_Registry::get('config')->url->admin_content . '/js/jquery-ui/jquery-ui.custom.min.js');
+        if ($this->jQuery()->isEnabled()) {
+            echo $this->jQuery();
+        } else {
+            $this->headScript()->prependFile(Zend_Registry::get('config')->url->admin_content . '/js/jquery.min.js');
+        }
+        echo $this->headScript();
+        ?>
+        
+        <?php //##################### highslide begin #####################//?>
+        <script type="text/javascript" src="<?php echo Zend_Registry::get('config')->url->admin_content;?>/js/highslide/highslide.js"></script>
+        <link rel="stylesheet" href="<?php echo Zend_Registry::get('config')->url->admin_content; ?>/js/highslide/highslide.css" type="text/css" media="screen, projection" />
+        <script type="text/javascript">
+        hs.graphicsDir = '<?php echo Zend_Registry::get('config')->url->admin_content;?>/js/highslide/graphics/';
+        hs.align = 'center';
+        hs.transitions = ['expand', 'crossfade'];
+        hs.outlineType = 'rounded-white';
+        hs.fadeInOut = true;
+        </script>
+        <?php //##################### highslide end #######################//?>
+        
+
+
+        
+        <!--[if lte IE 6]><link rel="stylesheet" href="<?php echo Zend_Registry::get('config')->url->admin_content; ?>/style/style_ie.css" type="text/css" media="screen, projection" /><![endif]-->
+
+    </head>
+
+    <body>
+        <div id="wrapper">
+            <div id="header" style="background-color:#9CCB07">
+                <div class="topmenu">
+                    <ul>
+                        <?php if ('admin-users' != $this->controllerName
+                            && 'admin-profile' != $this->controllerName
+                            && 'admin-logs' != $this->controllerName)
+                        { ?>
+                            <li class="topmenuactive">
+                                <span><a style="color:#000000" href="/admin/">Содержимое сайта</a></span>
+                            </li>
+                        <?php } else { ?>
+                            <li><a href="/admin/">Содержимое сайта</a></li>
+                        <?php } ?>
+
+                        <?php if ('admin-users' == $this->controllerName
+                            || 'admin-profile' == $this->controllerName)
+                        { ?>
+                            <li class="topmenuactive">
+                                <span>
+                                    <a style="color:#000000" href="/admin/admin-users/filter-by-type/value/admin">
+                                        Сотрудники
+                                    </a>
+                                </span>
+                            </li>
+                        <?php } else { ?>
+                            <li>
+                                <a href="/admin/admin-users/filter-by-type/value/admin">
+                                    Сотрудники
+                                </a>
+                            </li>
+                        <?php } ?>
+                    </ul>
+                </div><!--.topmenu-->
+
+                <div class="headuserbox">
+
+                    <ul>
+                        <li>
+                            <?php $acl = new Mc_Acl($this->userinfo());?>
+                            <?php if (!$acl->isAllowed('admin-admin-users')) { ?>
+                                <a href="<?php echo $this->url(array('module' => 'admin', 'controller' => 'admin-profile', 'action' => 'index'), 'default', true); ?>">
+                                    <b><?php echo $this->userinfo()->login; ?></b>
+                                </a>
+                            <?php } else { ?>
+                                <a href="<?php echo $this->url(array('module' => 'admin', 'controller' => 'admin-users', 'action' => 'edit', 'id' => $this->userinfo()->id), 'default', true); ?>">
+                                    <b><?php echo $this->userinfo()->login; ?></b>
+                                </a>
+                            <?php } ?>
+                        </li>
+                        <li><a href="<?php echo $this->url(array('module' => 'admin', 'controller' => 'admin-auth', 'action' => 'logout'), 'default', true); ?>">Выход</a></li>
+                    </ul>
+                </div><!--.headuserbox-->
+            </div><!-- #header-->
+
+            <?php echo $this->admininformation(); ?>
+
+            <div id="content">
+
+                <div class="leftsidebar">
+                    <div class="lefttop">
+                        <div class="logobox">
+                            <a href="<?php echo Zend_Registry::get('config')->url->root; ?>/admin">
+                                <img src="<?php echo Zend_Registry::get('config')->url->admin_content; ?>/images/logo.jpg" alt="" height="102" />
+                            </a>
+                        </div><!--.logobox-->
+                    </div><!--.lefttop-->
+                    <div class="leftconteiner">
+
+                        <?php //if ($this->controller != 'users' && $this->controller != 'logs') {  ?>
+
+                        <?php echo $this->adminmenu(); ?>
+
+                        <?php //} ?>
+                    </div><!--.leftconteiner-->
+                </div><!--.leftsidebar-->
+
+                <div class="conteiner">
+                    <div class="adminpath">
+                        <?php echo $this->navigation();?>
+                    </div><!--.adminpath-->
+
+                    <?php echo $this->layout()->content; ?>
+                    
+                </div><!--.conteiner-->
+            </div><!-- #content-->
+
+        </div><!-- #wrapper -->
+
+        <?php echo $this->adminfooter(); ?>
+
+    </body>
+</html>
+
+

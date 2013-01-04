@@ -1,0 +1,28 @@
+<?php
+$item = $this->banner;
+?>
+<?php if (count($item) > 0) { ?>
+    <div class="banner" id="banner<?php echo $item['id'] ?>">
+        <?php if (!empty($item['img'])) { ?>
+            <?php if ($item['link'] != '') { ?>
+                <a href="<?php echo $item['link']; ?>" target="_blank">
+            <?php } ?>
+            <img class="banner" src="<?php echo Zend_Registry::get('config')->url->upload . '/banners_articles/images/s_' . $item['img']; ?>" alt="" />
+            <?php if ($item['link'] != '') { ?>
+                </a>
+            <?php } ?>
+        <?php } ?>
+
+        <?php if ($item['file'] != '') { ?>
+            <?php
+            $size = getimagesize(Zend_Registry::get('config')->url->upload . '/banners_articles/files/' . $item['file']);
+            ?>
+            <script type="text/javascript">
+                var flashvars = {};
+                var params = {};
+                var attributes = {wmode: "transparent"};
+                swfobject.embedSWF("<?php echo Zend_Registry::get('config')->url->upload . '/banners_articles/files/' . $item['file']; ?>", "banner<?php echo $item['id'] ?>", "<?php echo $size[0]; ?>", "<?php echo $size[1]; ?>", "9.0.0", flashvars, params, attributes);
+            </script>
+        <?php } ?>
+    </div>
+<?php } ?>

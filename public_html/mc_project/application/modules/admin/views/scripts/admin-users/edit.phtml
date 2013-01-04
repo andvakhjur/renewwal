@@ -1,0 +1,67 @@
+<script type="text/javascript">
+    function checkUncheckAll(element) {
+        if(element.checked)
+        {
+            $('.perm_checkbox').attr('checked', true);
+            $('#check_all_top').attr('checked', true);
+            $('#check_all_bottom').attr('checked', true);
+        } else {
+            $('.perm_checkbox').attr('checked', false);
+            $('#check_all_top').attr('checked', false);
+            $('#check_all_bottom').attr('checked', false);
+        }
+    }
+    
+    function toggleType()
+    {
+        if('admin' == $('#type').val()){
+            // показываем права, не показываем инфу для обычных юзеров
+            $('#permissions-label').show();
+            $('#permissions-element').show();
+            $('#full_info-label').hide();
+            $('#full_info-element').hide();
+        } else if('user' == $('#type').val()) {
+            // показываем инфу для обычных юзеров, не показываем права
+            $('#permissions-label').hide();
+            $('#permissions-element').hide();
+            $('#full_info-label').show();
+            $('#full_info-element').show();
+        } else {
+            // показываем тупо всё
+            $('#permissions-label').show();
+            $('#permissions-element').show();
+            $('#full_info-label').show();
+            $('#full_info-element').show();
+        }
+    }
+    
+    $(document).ready(function()
+    {
+        // для юзеров и админов разные наборы данных
+        toggleType();
+        $('#type').change(function(){
+            toggleType();
+        });
+                
+        // чекбоксы на права
+        $('#check_all_top').click(function(){
+            checkUncheckAll(this);
+        });
+        $('#check_all_bottom').click(function(){
+            checkUncheckAll(this);
+        });
+    });
+    
+    
+    
+</script>
+
+<div class="costfilterbox">
+	<div class="costform">
+		<?php echo $this->filterForm;?>
+	</div>
+</div>
+
+<?php echo $this->adminFormErrors($this->form); ?>
+
+<?php echo $this->form;?>

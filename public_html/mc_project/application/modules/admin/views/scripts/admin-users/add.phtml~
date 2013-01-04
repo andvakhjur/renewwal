@@ -1,0 +1,23 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        
+        $('#check_all').click(function () {
+            if(document.getElementById('check_all').checked){
+            $('.perm_checkbox').attr('checked', true);
+            }else{
+            $('.perm_checkbox').attr('checked', false);
+            }
+        });
+        
+        $('#check_all').check(function(){
+            alert('hello_world!');
+        });
+    });
+</script>
+
+<div class="costfilterbox">
+	<div class="costform">
+		<?php echo $this->filterForm;?>
+	</div>
+</div>
+<?php echo $this->form;?>

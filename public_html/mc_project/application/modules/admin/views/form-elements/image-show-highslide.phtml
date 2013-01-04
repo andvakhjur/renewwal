@@ -1,0 +1,66 @@
+<?php
+$this->headScript()->captureStart();
+?>
+function deleteImg<?php echo $this->options['elementName']; ?>() {
+$('#<?php echo $this->options['elementName']; ?>_del_old').attr('checked', 'checked');
+
+$('#img-delete-<?php echo $this->options['elementName']; ?>').fadeOut();
+$('#img-container-<?php echo $this->options['elementName']; ?>').fadeOut(function() {
+$('#img-restore-<?php echo $this->options['elementName']; ?>').show();
+});
+}
+
+function restoreImg<?php echo $this->options['elementName']; ?>() {
+$('#<?php echo $this->options['elementName']; ?>_del_old').attr('checked', '');
+
+$('#img-delete-<?php echo $this->options['elementName']; ?>').fadeIn();
+$('#img-container-<?php echo $this->options['elementName']; ?>').fadeIn();
+
+$('#img-restore-<?php echo $this->options['elementName']; ?>').hide();
+}
+
+$(document).ready(function(){
+$('#img-delete-<?php echo $this->options['elementName']; ?>').show();
+
+$('#<?php echo $this->options['elementName']; ?>_del_old-label').hide();
+$('#<?php echo $this->options['elementName']; ?>_del_old-element').hide();
+});
+<?php
+$this->headScript()->captureEnd();
+?>
+
+<dt id="img-label">
+<label class="optional" for="img">&nbsp;</label>
+</dt>
+<dd>
+    <div>
+        <div id="img-container-<?php echo $this->options['elementName']; ?>" style="overflow:hidden; text-align:left; float: left;">
+            <?php
+            if (is_file($this->options['filePath']['big'])) {
+                $srcBig = $this->options['fileUrl']['big'];
+            } else {
+                $srcBig = $this->options['capUrl']['big'];
+            }
+
+            if (is_file($this->options['filePath']['small'])) {
+                $srcSmall = $this->options['fileUrl']['small'];
+            } else {
+                $srcSmall = $this->options['capUrl']['small'];
+            }
+            ?>
+            <a class="highslide" onclick="return hs.expand(this)" href="<?php echo $srcBig; ?>">
+                <img src="<?php echo $srcSmall; ?>" />
+                <img style="position:relative; left:-32px; bottom:4px;" src="<?php echo Zend_Registry::get('config')->url->admin_content; ?>/images/lens.png" alt="" width="24" height="24" />
+            </a>
+        </div>
+        <div style="float: left; display: none;" id="img-delete-<?php echo $this->options['elementName']; ?>">
+            <a title="<?php echo Zend_Registry::get('view')->translate('Удалить'); ?>" href="javascript: void(0);" onclick="<?php echo 'deleteImg' . $this->options['elementName'] . '();'; ?>">
+                <img width="18" height="18" alt="x" src="<?php echo Zend_Registry::get('config')->url->admin_content; ?>/images/delbut.png" />
+            </a>
+        </div>
+        <div style="float: left; display: none;" id="img-restore-<?php echo $this->options['elementName']; ?>">
+            <?php echo Zend_Registry::get('view')->translate('Изображение будет удалено после сохранения'); ?>.
+            <a href="javascript: void(0);" onclick="<?php echo 'restoreImg' . $this->options['elementName'] . '();'; ?>"><?php echo Zend_Registry::get('view')->translate('Отменить'); ?></a>.
+        </div>
+    </div>
+</dd>
